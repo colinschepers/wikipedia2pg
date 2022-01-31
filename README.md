@@ -1,1 +1,1 @@
-# WikipediaParser
+# WikipediaExtractor
