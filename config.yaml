@@ -1,0 +1,10 @@
+database:
+  host: localhost
+  port: 5432
+  database: wikipedia
+  user: postgres
+  password: postgres
+  schema: public
+base_url: "http://dumps.wikimedia.org/enwiki/latest/"
+read_block_size: 8192
+insert_batch_size: 100000
