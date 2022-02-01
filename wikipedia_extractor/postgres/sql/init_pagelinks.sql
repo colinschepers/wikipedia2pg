@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS pagelinks;
 DROP INDEX IF EXISTS pagelinks_from;
 DROP INDEX IF EXISTS pagelinks_title;
 

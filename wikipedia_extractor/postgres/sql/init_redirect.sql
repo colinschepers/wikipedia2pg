@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS redirect;
 DROP INDEX IF EXISTS redirect_from;
 DROP INDEX IF EXISTS redirect_title;
 

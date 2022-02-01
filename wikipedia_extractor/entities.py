@@ -2,7 +2,8 @@ from enum import Enum
 
 
 class Entity(Enum):
-    page = "page"
-    pagelink = "pagelinks"
-    redirect = "redirect"
-    abstract = "abstract"
+    PAGE = "page"
+    PAGELINK = "pagelink"
+    REDIRECT = "redirect"
+    ABSTRACT = "abstract"
+    ARTICLE = "article"

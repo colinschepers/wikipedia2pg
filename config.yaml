@@ -5,6 +5,6 @@ database:
   user: postgres
   password: postgres
   schema: public
-base_url: "http://dumps.wikimedia.org/enwiki/latest/"
+base_url: "http://dumps.wikimedia.org/enwiki/latest"
 read_block_size: 8192
-insert_batch_size: 100000
+insert_batch_size: 10000

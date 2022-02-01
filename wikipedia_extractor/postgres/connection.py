@@ -13,6 +13,9 @@ class PostgresConnection:
         self.schema = schema
         self._connection = None
 
+    def commit(self):
+        self.connection.commit()
+
     @contextlib.contextmanager
     def cursor(self):
         yield self.connection.cursor()
