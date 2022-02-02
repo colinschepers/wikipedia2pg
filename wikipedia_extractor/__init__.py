@@ -10,8 +10,8 @@ from wikipedia_extractor.postgres import PostgresConnection
 __all__ = [Entity]
 
 
-def extract(connection: PostgresConnection, entity: Entity, path: str = "", drop_tables: bool = False):
-    if drop_tables:
+def extract(connection: PostgresConnection, entity: Entity, path: str = "", drop_table: bool = False):
+    if drop_table:
         with connection.cursor() as cursor:
             cursor.execute(f"DROP TABLE IF EXISTS {entity.value};")
 
