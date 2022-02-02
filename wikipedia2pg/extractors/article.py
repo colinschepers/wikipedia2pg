@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
 from typing import Tuple
 
-from wikipedia_extractor import Entity
-from wikipedia_extractor.extractors.xml import XmlExtractor
+from wikipedia2pg import Entity
+from wikipedia2pg.extractors.xml import XmlExtractor
 
 
 class ArticleExtractor(XmlExtractor):

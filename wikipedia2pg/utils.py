@@ -12,8 +12,8 @@ from urllib.request import urlopen, Request
 
 from tqdm import tqdm
 
-from wikipedia_extractor import Entity
-from wikipedia_extractor.config import CONFIG
+from wikipedia2pg import Entity
+from wikipedia2pg.config import CONFIG
 
 READ_BLOCK_SIZE = CONFIG["read_block_size"]
 

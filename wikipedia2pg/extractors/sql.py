@@ -4,8 +4,8 @@ from itertools import islice
 from pathlib import Path
 from typing import Iterable
 
-from wikipedia_extractor.extractors import BaseExtractor
-from wikipedia_extractor.utils import read_compressed, chunks, get_count
+from wikipedia2pg.extractors import BaseExtractor
+from wikipedia2pg.utils import read_compressed, chunks, get_count
 
 
 class SqlExtractor(BaseExtractor):

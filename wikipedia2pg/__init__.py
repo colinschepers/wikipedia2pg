@@ -1,11 +1,11 @@
-from wikipedia_extractor.config import CONFIG
-from wikipedia_extractor.entities import Entity
-from wikipedia_extractor.extractors.abstract import AbstractExtractor
-from wikipedia_extractor.extractors.article import ArticleExtractor
-from wikipedia_extractor.extractors.page import PageExtractor
-from wikipedia_extractor.extractors.pagelink import PagelinkExtractor
-from wikipedia_extractor.extractors.redirect import RedirectExtractor
-from wikipedia_extractor.postgres import PostgresConnection
+from wikipedia2pg.config import CONFIG
+from wikipedia2pg.entities import Entity
+from wikipedia2pg.extractors.abstract import AbstractExtractor
+from wikipedia2pg.extractors.article import ArticleExtractor
+from wikipedia2pg.extractors.page import PageExtractor
+from wikipedia2pg.extractors.pagelink import PagelinkExtractor
+from wikipedia2pg.extractors.redirect import RedirectExtractor
+from wikipedia2pg.postgres import PostgresConnection
 
 __all__ = [CONFIG, Entity, PostgresConnection]
 

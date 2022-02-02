@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from wikipedia_extractor import CONFIG
-from wikipedia_extractor.postgres import PostgresConnection, get_init_sql, get_finish_sql
+from wikipedia2pg import CONFIG
+from wikipedia2pg.postgres import PostgresConnection, get_init_sql, get_finish_sql
 
 
 class BaseExtractor(ABC):

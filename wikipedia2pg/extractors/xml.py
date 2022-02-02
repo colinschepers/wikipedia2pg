@@ -7,8 +7,8 @@ from typing import Iterable, Tuple
 
 from psycopg2.extras import execute_values
 
-from wikipedia_extractor.extractors import BaseExtractor
-from wikipedia_extractor.utils import read_compressed, chunks, get_count
+from wikipedia2pg.extractors import BaseExtractor
+from wikipedia2pg.utils import read_compressed, chunks, get_count
 
 
 class XmlExtractor(BaseExtractor):

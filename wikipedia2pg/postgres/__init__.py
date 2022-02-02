@@ -1,7 +1,7 @@
 from os.path import realpath, dirname
 
-from wikipedia_extractor import Entity
-from wikipedia_extractor.postgres.connection import PostgresConnection
+from wikipedia2pg import Entity
+from wikipedia2pg.postgres.connection import PostgresConnection
 
 __all__ = [PostgresConnection]
 

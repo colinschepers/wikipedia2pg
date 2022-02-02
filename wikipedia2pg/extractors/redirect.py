@@ -1,5 +1,5 @@
-from wikipedia_extractor import Entity
-from wikipedia_extractor.extractors.sql import SqlExtractor
+from wikipedia2pg import Entity
+from wikipedia2pg.extractors.sql import SqlExtractor
 
 
 class RedirectExtractor(SqlExtractor):
