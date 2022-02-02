@@ -1,8 +1,6 @@
 import argparse
 
-from wikipedia_extractor import CONFIG, Entity, extract
-from wikipedia_extractor.postgres import PostgresConnection
-
+from wikipedia_extractor import CONFIG, Entity, extract, PostgresConnection
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

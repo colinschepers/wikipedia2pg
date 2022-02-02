@@ -7,7 +7,7 @@ from wikipedia_extractor.extractors.pagelink import PagelinkExtractor
 from wikipedia_extractor.extractors.redirect import RedirectExtractor
 from wikipedia_extractor.postgres import PostgresConnection
 
-__all__ = [Entity]
+__all__ = [CONFIG, Entity, PostgresConnection]
 
 
 def extract(connection: PostgresConnection, entity: Entity, path: str = "", drop_table: bool = False):
