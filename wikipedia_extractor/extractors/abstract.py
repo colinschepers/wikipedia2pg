@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 from typing import Tuple
 
-from wikipedia_extractor import Entity, CONFIG
+from wikipedia_extractor import Entity
 from wikipedia_extractor.extractors.xml import XmlExtractor
 
 
@@ -20,5 +20,5 @@ class AbstractExtractor(XmlExtractor):
         return Entity.ABSTRACT
 
     @property
-    def url(self):
-        return f"{CONFIG['base_url']}/enwiki-latest-abstract.xml.gz"
+    def filename(self):
+        return "enwiki-latest-abstract.xml.gz"

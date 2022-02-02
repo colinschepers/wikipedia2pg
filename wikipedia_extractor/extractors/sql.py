@@ -1,5 +1,7 @@
+import os
 import re
 from itertools import islice
+from pathlib import Path
 from typing import Iterable
 
 from wikipedia_extractor.extractors import BaseExtractor
@@ -17,7 +19,7 @@ class SqlExtractor(BaseExtractor):
                 self.connection.commit()
 
     def _get_records(self) -> Iterable[str]:
-        for line in read_compressed(self.url):
+        for line in read_compressed(self.path, self.filename):
             if not line.startswith("INSERT"):
                 continue
 

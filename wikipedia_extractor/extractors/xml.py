@@ -1,6 +1,8 @@
+import os.path
 import xml.etree.ElementTree as ET
 from abc import abstractmethod
 from itertools import islice
+from pathlib import Path
 from typing import Iterable, Tuple
 
 from psycopg2.extras import execute_values
@@ -21,7 +23,7 @@ class XmlExtractor(BaseExtractor):
 
     def _get_records(self) -> Iterable[str]:
         record = None
-        for line in read_compressed(self.url):
+        for line in read_compressed(self.path, self.filename):
             line = line.lstrip()
 
             if record is not None:

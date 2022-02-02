@@ -1,8 +1,5 @@
-DROP INDEX IF EXISTS page_title;
-DROP INDEX IF EXISTS page_is_redirect;
-
 CREATE TABLE IF NOT EXISTS page (
-  id integer NOT NULL,
+  id serial NOT NULL,
   namespace integer NOT NULL DEFAULT 0,
   title text NOT NULL DEFAULT '',
   restrictions text DEFAULT NULL,
@@ -16,3 +13,7 @@ CREATE TABLE IF NOT EXISTS page (
   content_model text DEFAULT NULL,
   lang text DEFAULT NULL
 );
+
+ALTER TABLE page DROP CONSTRAINT IF EXISTS page_pkey;
+DROP INDEX IF EXISTS page_title;
+DROP INDEX IF EXISTS page_is_redirect;

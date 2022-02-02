@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 from typing import Tuple
 
-from wikipedia_extractor import Entity, CONFIG
+from wikipedia_extractor import Entity
 from wikipedia_extractor.extractors.xml import XmlExtractor
 
 
@@ -23,5 +23,5 @@ class ArticleExtractor(XmlExtractor):
         return Entity.ARTICLE
 
     @property
-    def url(self):
-        return f"{CONFIG['base_url']}/enwiki-latest-pages-articles-multistream.xml.bz2"
+    def filename(self):
+        return "enwiki-latest-pages-articles-multistream.xml.bz2"

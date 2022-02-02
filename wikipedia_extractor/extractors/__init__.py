@@ -5,8 +5,9 @@ from wikipedia_extractor.postgres import PostgresConnection, get_init_sql, get_f
 
 
 class BaseExtractor(ABC):
-    def __init__(self, connection: PostgresConnection):
+    def __init__(self, connection: PostgresConnection, path: str):
         self.connection = connection
+        self.path = path
         self.insert_batch_size = CONFIG["insert_batch_size"]
 
     def extract(self):
@@ -27,5 +28,5 @@ class BaseExtractor(ABC):
 
     @property
     @abstractmethod
-    def url(self):
+    def filename(self):
         raise NotImplemented

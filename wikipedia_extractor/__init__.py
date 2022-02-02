@@ -10,16 +10,20 @@ from wikipedia_extractor.postgres import PostgresConnection
 __all__ = [Entity]
 
 
-def extract(connection: PostgresConnection, entity: Entity):
+def extract(connection: PostgresConnection, entity: Entity, path: str = "", drop_tables: bool = False):
+    if drop_tables:
+        with connection.cursor() as cursor:
+            cursor.execute(f"DROP TABLE IF EXISTS {entity.value};")
+
     if entity == entity.PAGE:
-        return PageExtractor(connection).extract()
+        return PageExtractor(connection, path).extract()
     elif entity == entity.PAGELINK:
-        return PagelinkExtractor(connection).extract()
+        return PagelinkExtractor(connection, path).extract()
     elif entity == entity.REDIRECT:
-        return RedirectExtractor(connection).extract()
+        return RedirectExtractor(connection, path).extract()
     elif entity == entity.ABSTRACT:
-        return AbstractExtractor(connection).extract()
+        return AbstractExtractor(connection, path).extract()
     elif entity == entity.ARTICLE:
-        return ArticleExtractor(connection).extract()
+        return ArticleExtractor(connection, path).extract()
     else:
         raise ValueError(f"Invalid entity: {entity.name}")
