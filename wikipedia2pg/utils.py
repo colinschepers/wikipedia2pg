@@ -7,7 +7,7 @@ import zlib
 from itertools import chain, islice
 from pathlib import Path
 from sqlite3 import Cursor
-from typing import Iterable, List
+from typing import Iterable, List, BinaryIO
 from urllib.request import urlopen, Request
 
 from tqdm import tqdm
@@ -36,17 +36,12 @@ def read_compressed(path: str, filename: str) -> Iterable[str]:
 
 def read_compressed_from_file(path: str) -> Iterable[str]:
     file_size = os.path.getsize(path)
-
-    prefix = ""
     with tqdm(unit='B', unit_scale=True, miniters=1, desc=f"{path}", total=file_size) as progress_bar:
-        with _open(path) as file:
-            while progress_bar.n < file_size:
-                data = file.read(READ_BLOCK_SIZE)
-                content = prefix + data.decode('utf8', errors='replace')
-                lines = content.split("\n")
-                yield from lines[:-1]
-                prefix = lines[-1]
-                progress_bar.update(READ_BLOCK_SIZE)
+        with open(path, "rb") as file:
+            with _open_zip(file) as zip_file:
+                for line in zip_file:
+                    yield line.decode('utf8', errors='replace')
+                    progress_bar.update(file.tell() - progress_bar.n)
 
 
 def read_compressed_from_url(url: str) -> Iterable[str]:
@@ -56,6 +51,11 @@ def read_compressed_from_url(url: str) -> Iterable[str]:
     decompressor = _get_decompressor(url)
     prefix = ""
     with tqdm(unit='B', unit_scale=True, miniters=1, desc=f"{url}", total=file_size) as progress_bar:
+        with _open_zip(response) as zip_file:
+            for line in zip_file:
+                yield line.decode('utf8', errors='replace')
+                progress_bar.update(response.tell() - progress_bar.n)
+
         while progress_bar.n < file_size:
             compressed_data = response.read(READ_BLOCK_SIZE)
             decompressed_data = decompressor.decompress(compressed_data)
@@ -84,12 +84,12 @@ def _get_decompressor(filename: str):
         raise ValueError(f"Invalid extension: {extension}")
 
 
-def _open(path: str):
-    extension = Path(path).suffix
+def _open_zip(file: BinaryIO):
+    extension = Path(file.name).suffix
     if extension == ".gz":
-        return gzip.open(path, "rb")
+        return gzip.open(file, "rb")
     elif extension == ".bz2":
-        return bz2.BZ2File(path, "rb")
+        return bz2.BZ2File(file, "rb")
     else:
         raise ValueError(f"Invalid extension: {extension}")
 
