@@ -8,7 +8,7 @@ from itertools import chain, islice
 from pathlib import Path
 from sqlite3 import Cursor
 from typing import Iterable, List, BinaryIO
-from urllib.request import urlopen, Request
+from urllib.request import urlopen, Request, urlretrieve
 
 from tqdm import tqdm
 
@@ -25,63 +25,35 @@ def chunks(iterable: Iterable, size: int) -> Iterable[List]:
 
 
 def read_compressed(path: str, filename: str) -> Iterable[str]:
-    path = str(Path(path).absolute() / filename)
-    try:
-        yield from read_compressed_from_file(path)
-    except FileNotFoundError:
-        warnings.warn(f"File not found: {path}, switching to streaming...")
+    path = Path(path).absolute() / filename
+
+    if not path.exists():
         url = urllib.parse.urljoin(CONFIG["base_url"], filename)
-        yield from read_compressed_from_url(url)
+        _download_dump(url, path)
 
-
-def read_compressed_from_file(path: str) -> Iterable[str]:
     file_size = os.path.getsize(path)
-    with tqdm(unit='B', unit_scale=True, miniters=1, desc=f"{path}", total=file_size) as progress_bar:
-        with open(path, "rb") as file:
-            with _open_zip(file) as zip_file:
-                for line in zip_file:
-                    yield line.decode('utf8', errors='replace')
-                    progress_bar.update(file.tell() - progress_bar.n)
-
-
-def read_compressed_from_url(url: str) -> Iterable[str]:
-    response = urlopen(Request(url))
-    file_size = int(response.headers.get('Content-Length'))
-
-    decompressor = _get_decompressor(url)
-    prefix = ""
-    with tqdm(unit='B', unit_scale=True, miniters=1, desc=f"{url}", total=file_size) as progress_bar:
-        with _open_zip(response) as zip_file:
+    with tqdm(unit='B', unit_scale=True, miniters=1, desc=f"Processing {path}", total=file_size) as progress_bar:
+        with open(path, "rb") as file, _open_zip(file) as zip_file:
             for line in zip_file:
                 yield line.decode('utf8', errors='replace')
-                progress_bar.update(response.tell() - progress_bar.n)
-
-        while progress_bar.n < file_size:
-            compressed_data = response.read(READ_BLOCK_SIZE)
-            decompressed_data = decompressor.decompress(compressed_data)
-            content = prefix + decompressed_data.decode("utf-8", errors="replace")
-
-            while decompressor.unused_data:
-                unused_data = decompressor.unused_data
-                decompressor = _get_decompressor(url)
-                content += decompressor.decompress(unused_data).decode("utf-8", errors="replace")
-
-            lines = content.split("\n")
-            yield from lines[:-1]
-            prefix = lines[-1]
-            progress_bar.update(READ_BLOCK_SIZE)
-        if prefix:
-            yield prefix
+                progress_bar.update(file.tell() - progress_bar.n)
 
 
-def _get_decompressor(filename: str):
-    extension = Path(filename).suffix
-    if extension == ".gz":
-        return zlib.decompressobj(zlib.MAX_WBITS | 32)
-    elif extension == ".bz2":
-        return bz2.BZ2Decompressor()
-    else:
-        raise ValueError(f"Invalid extension: {extension}")
+def _download_dump(url: str, path: Path):
+    def tqdm_hook(t):
+        last_b = [0]
+
+        def inner(transfered_blocks=1, block_size=1, total_size=None):
+            if total_size is not None:
+                t.total = total_size
+            t.update((transfered_blocks - last_b[0]) * block_size)
+            last_b[0] = transfered_blocks
+
+        return inner
+
+    os.makedirs(path.parent, exist_ok=True)
+    with tqdm(unit='B', unit_scale=True, miniters=1, desc=f"Downloading {path.name}") as progress_bar:
+        urlretrieve(url, filename=str(path), reporthook=tqdm_hook(progress_bar), data=None)
 
 
 def _open_zip(file: BinaryIO):
