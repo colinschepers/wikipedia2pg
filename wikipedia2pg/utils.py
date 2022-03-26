@@ -2,13 +2,11 @@ import bz2
 import gzip
 import os.path
 import urllib.parse
-import warnings
-import zlib
 from itertools import chain, islice
 from pathlib import Path
 from sqlite3 import Cursor
 from typing import Iterable, List, BinaryIO
-from urllib.request import urlopen, Request, urlretrieve
+from urllib.request import urlretrieve
 
 from tqdm import tqdm
 
@@ -43,11 +41,11 @@ def _download_dump(url: str, path: Path):
     def tqdm_hook(t):
         last_b = [0]
 
-        def inner(transfered_blocks=1, block_size=1, total_size=None):
+        def inner(transferred_blocks=1, block_size=1, total_size=None):
             if total_size is not None:
                 t.total = total_size
-            t.update((transfered_blocks - last_b[0]) * block_size)
-            last_b[0] = transfered_blocks
+            t.update((transferred_blocks - last_b[0]) * block_size)
+            last_b[0] = transferred_blocks
 
         return inner
 

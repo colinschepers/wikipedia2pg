@@ -1,7 +1,5 @@
-import os
 import re
 from itertools import islice
-from pathlib import Path
 from typing import Iterable
 
 from wikipedia2pg.extractors import BaseExtractor

@@ -1,8 +1,6 @@
-import os.path
 import xml.etree.ElementTree as ET
 from abc import abstractmethod
 from itertools import islice
-from pathlib import Path
 from typing import Iterable, Tuple
 
 from psycopg2.extras import execute_values
