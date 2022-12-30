@@ -28,7 +28,7 @@ Follow the steps below to get started:
 2. Install dependencies: `pip install -r requirements.txt`
 3. Optionally, download the dumps to a local directory. If you skip this step, the required files will be downloaded 
 automatically when you run the application.
-4. Optionally, update the Postgres credentials in `config.yaml`. Alternatively, use script arguments to overwrite 
+4. Update the Postgres credentials in `config.yaml`. Alternatively, use script arguments to overwrite 
 the values (see next section). 
 
 ## Usage
@@ -62,7 +62,7 @@ from wikipedia_extractor import Entity, extract, PostgresConnection
 
 connection = PostgresConnection(host="localhost", port="5432", database="wikipedia",
                                 user="user", password="password", schema="public")
-extract(connection, Entity.ARTICLE, r"\path\to\dumps", drop_table=True)
+extract(connection, Entity.ARTICLE, "\path\to\dumps", drop_table=True)
 ```
 
 ## Implementation 
