@@ -12,8 +12,8 @@ class SqlExtractor(BaseExtractor):
             count = get_count(cursor, self.entity)
             records = islice(self._get_records(), count, None)
             for chunk in chunks(records, self.insert_batch_size):
-                sql = f"INSERT INTO {self.entity.value} VALUES {','.join(chunk)};"
-                cursor.execute(sql)
+                insert_sql = f"INSERT INTO {self.entity.value} VALUES {','.join(chunk)};"
+                cursor.execute(insert_sql)
                 self.connection.commit()
 
     def _get_records(self) -> Iterable[str]:
